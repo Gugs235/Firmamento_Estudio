@@ -1,0 +1,48 @@
+{
+	"name": "Firmamento Estúdio",
+	"description": "Studio digital de criação de sites, sistemas e ferramentas",
+	"northStar": "O estúdio em órbita",
+	"palette": {
+		"space-navy": "#0b0b10",
+		"space-navy-alt": "#101018",
+		"surface-card": "#14141f",
+		"border": "#23232f",
+		"text-primary": "#f2f2f5",
+		"text-muted": "#9c9ca8",
+		"accent-cobalt": "#4e6bff",
+		"accent-cobalt-deep": "#0e1430"
+	},
+	"typography": {
+		"display": {
+			"fontFamily": "Orbitron, sans-serif",
+			"fontSize": "clamp(30px, 5vw, 46px)",
+			"fontWeight": 700,
+			"lineHeight": 1.15
+		},
+		"body": {
+			"fontFamily": "Inter, sans-serif",
+			"fontSize": "16px",
+			"fontWeight": 400,
+			"lineHeight": 1.6
+		}
+	},
+	"rules": [
+		"O azul é o principal ponto de destaque e deve ser usado com intenção.",
+		"A identidade orbital deve funcionar como assinatura sem prejudicar a legibilidade.",
+		"O sistema prioriza leitura direta, conversão clara e um visual premium discreto."
+	],
+	"components": {
+		"button-primary": {
+			"backgroundColor": "#4e6bff",
+			"textColor": "#f2f2f5",
+			"padding": "14px 28px",
+			"radius": "4px"
+		},
+		"card": {
+			"backgroundColor": "#14141f",
+			"borderColor": "#23232f",
+			"radius": "12px",
+			"padding": "36px"
+		}
+	}
+}
