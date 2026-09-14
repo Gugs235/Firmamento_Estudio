@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useFirmamentoScene } from "./lib/use-firmamento-scene";
+import { useProcessScene } from "./lib/use-process-scene";
 import MorphicNavbar from "./components/kokonutui/morphic-navbar";
-import Lightfall from "./components/Lightfall";
 
 const navItems = [
 	["Portfólio", "#portfolio"],
@@ -84,8 +84,6 @@ function Hero() {
 			aria-label="Viagem pelo Firmamento"
 		>
 			<div className="scroll-viewport">
-				<canvas className="starfield" aria-hidden="true" />
-				<div className="warp" aria-hidden="true" />
 				<div className="travel-copy">
 					<div className="section-label">Viagem pelo Firmamento</div>
 					<h1>
@@ -117,23 +115,6 @@ function Hero() {
 function Portfolio() {
 	return (
 		<section id="portfolio" className="portfolio-shell">
-			<div className="portfolio-lightfall" aria-hidden="true">
-				<Lightfall
-					colors={["#4e6bff", "#8ca0ff", "#f2f2f5"]}
-					backgroundColor="#0b0b10"
-					speed={0.18}
-					streakCount={5}
-					streakWidth={0.75}
-					streakLength={1.3}
-					glow={0.55}
-					density={0.45}
-					twinkle={0.75}
-					zoom={3.2}
-					backgroundGlow={0.25}
-					opacity={0.55}
-					mouseInteraction={false}
-				/>
-			</div>
 			<div className="section-label">Portfólio</div>
 			<h2 className="section-title">
 				Uma ideia que saiu do papel e foi para o mercado.
@@ -180,22 +161,31 @@ function Portfolio() {
 }
 
 function Process() {
+	const processRef = useRef<HTMLDivElement>(null);
+	useProcessScene(processRef);
+
 	return (
-		<section id="processo">
-			<div className="section-label">Como funciona</div>
-			<h2 className="section-title">
-				De uma ideia ainda confusa a um produto pronto para crescer.
-			</h2>
-			<div className="steps">
-				{steps.map(([number, title, description]) => (
-					<div className="step" key={number}>
-						<div className="step-num">{number}</div>
-						<div className="step-body">
-							<h3>{title}</h3>
-							<p>{description}</p>
-						</div>
+		<section id="processo" className="process-scene">
+			<div className="process-stage" ref={processRef}>
+				<div className="process-viewport">
+					<div className="process-header">
+						<div className="section-label">Como funciona</div>
+						<h2 className="process-title section-title">
+							De uma ideia ainda confusa a um produto pronto para crescer.
+						</h2>
 					</div>
-				))}
+					<div className="process-steps" aria-live="polite">
+						{steps.map(([number, title, description]) => (
+							<div className="process-step step" key={number}>
+								<div className="step-num">{number}</div>
+								<div className="step-body">
+									<h3>{title}</h3>
+									<p>{description}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 		</section>
 	);
@@ -303,6 +293,7 @@ export default function App() {
 	}, []);
 	return (
 		<>
+			<canvas className="starfield-bg" aria-hidden="true" />
 			<div id="top" />
 			<Navigation />
 			<main>

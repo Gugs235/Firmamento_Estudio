@@ -1,4 +1,5 @@
 import { RefObject, useEffect } from "react";
+import { clamp, remap } from "./scroll-utils";
 
 type Star = {
 	x: number;
@@ -12,11 +13,13 @@ export function useFirmamentoScene(stageRef: RefObject<HTMLElement | null>) {
 	useEffect(() => {
 		const stage = stageRef.current;
 		const viewport = stage?.querySelector<HTMLElement>(".scroll-viewport");
-		const canvas = stage?.querySelector<HTMLCanvasElement>(".starfield");
+		const canvas = document.querySelector<HTMLCanvasElement>(".starfield-bg");
+		const portfolioSection =
+			document.querySelector<HTMLElement>(".portfolio-shell");
 		const nodeLayer = stage?.querySelector<HTMLElement>(".tunnel-nodes");
 		const cards = [...document.querySelectorAll<HTMLElement>("[data-project]")];
 		const context = canvas?.getContext("2d");
-		if (!stage || !viewport || !canvas || !nodeLayer || !context) return;
+		if (!stage || !canvas || !portfolioSection || !nodeLayer || !context) return;
 
 		const root = document.documentElement;
 		const stars: Star[] = [];
@@ -37,15 +40,10 @@ export function useFirmamentoScene(stageRef: RefObject<HTMLElement | null>) {
 		const windowSize = projectNames.length
 			? (tunnelEnd - tunnelStart) / Math.max(projectNames.length - 0.35, 1)
 			: 0;
-		const clamp = (value: number, min = 0, max = 1) =>
-			Math.min(Math.max(value, min), max);
-		const remap = (value: number, start: number, end: number) =>
-			clamp((value - start) / (end - start));
-
 		const setupCanvas = () => {
 			const ratio = Math.min(window.devicePixelRatio || 1, 2);
-			width = viewport.clientWidth;
-			height = viewport.clientHeight;
+			width = window.innerWidth;
+			height = window.innerHeight;
 			canvas.width = width * ratio;
 			canvas.height = height * ratio;
 			canvas.style.width = `${width}px`;
@@ -143,6 +141,19 @@ export function useFirmamentoScene(stageRef: RefObject<HTMLElement | null>) {
 				);
 			});
 		};
+		const getStarSpeed = () => {
+			const heroTotal = stage.offsetHeight - window.innerHeight;
+			const heroRect = stage.getBoundingClientRect();
+			const heroProgress = heroTotal > 0 ? clamp(-heroRect.top / heroTotal) : 0;
+			const tunnelSpeed = 1.2 + remap(heroProgress, 0.38, 0.72) * 21.8;
+			if (heroProgress < 0.85) return tunnelSpeed;
+
+			const portfolioRect = portfolioSection.getBoundingClientRect();
+			const settleProgress = clamp(1 - portfolioRect.top / window.innerHeight);
+			const peakTunnelSpeed = 1.2 + 21.8;
+			const ambientSpeed = 1.4;
+			return peakTunnelSpeed + (ambientSpeed - peakTunnelSpeed) * settleProgress;
+		};
 		const applyProgress = () => {
 			const total = stage.offsetHeight - window.innerHeight;
 			const rect = stage.getBoundingClientRect();
@@ -182,7 +193,7 @@ export function useFirmamentoScene(stageRef: RefObject<HTMLElement | null>) {
 			updateNodes();
 		};
 		const draw = () => {
-			drawStars(reduce ? 0 : 1.2 + remap(progress, 0.38, 0.72) * 21.8);
+			drawStars(reduce ? 0 : getStarSpeed());
 			if (!reduce) {
 				applyProgress();
 				frame = requestAnimationFrame(draw);
