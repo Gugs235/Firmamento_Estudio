@@ -1159,7 +1159,8 @@ nav {
 
 .process-stage {
 	position: relative;
-	height: calc((6 + 1) * 100vh);
+	--process-step-count: 6;
+	height: calc((var(--process-step-count, 6) + 1.6) * 100vh);
 	padding: 0;
 }
 
@@ -1184,17 +1185,16 @@ nav {
 }
 
 .process-scene.is-light .process-title,
-.process-scene.is-light .step-body h3,
-.process-scene.is-light .step-body p,
-.process-scene.is-light .step-num,
+.process-scene.is-light .process-step .step-body h3,
+.process-scene.is-light .process-step .step-body p,
+.process-scene.is-light .process-step .step-num,
 .process-scene.is-light .section-label {
 	color: var(--process-title-light);
 }
 
-.process-scene.is-light .step-body p,
-.process-scene.is-light .step-body p,
+.process-scene.is-light .process-step .step-body p,
 .process-scene.is-light .section-label,
-.process-scene.is-light .step-num {
+.process-scene.is-light .process-step .step-num {
 	color: var(--process-text-light);
 }
 
@@ -1203,62 +1203,82 @@ nav {
 	inset: 0;
 	display: grid;
 	place-items: center;
+	text-align: center;
 	z-index: 2;
 	pointer-events: none;
+	opacity: var(--process-title-opacity, 1);
+	transform: translate3d(0, calc(var(--process-title-rise, 0px) * -1), 0)
+		scale(calc(0.94 + (var(--process-title-opacity, 1) * 0.08)));
+	transition:
+		opacity 220ms var(--ease-smooth),
+		transform 220ms var(--ease-smooth);
 }
 
 .process-title {
 	margin: 0;
+	font-size: clamp(2.8rem, 6vw, 6rem);
+	line-height: 0.98;
+	letter-spacing: -0.06em;
 	max-width: min(900px, 72vw);
 	text-align: center;
 	color: var(--process-title-dark);
-	transform: translate3d(0, 0, 0);
+}
+
+.process-subtitle {
+	max-width: min(680px, 70vw);
+	margin: 18px auto 0;
+	font-size: clamp(1.05rem, 1.7vw, 1.6rem);
+	line-height: 1.35;
+	letter-spacing: -0.04em;
+	color: var(--process-muted-dark);
+}
+
+.process-scene.is-light .process-subtitle {
+	color: var(--process-muted-light);
 }
 
 .process-steps {
-	position: relative;
+	position: absolute;
+	inset: 0;
 	z-index: 3;
-	max-width: min(760px, 70vw);
-	margin: 0 auto;
-	padding-top: 12vh;
+	pointer-events: none;
 }
 
 .process-step {
-	position: relative;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: min(720px, 76vw);
 	display: flex;
-	align-items: flex-start;
-	gap: 20px;
-	max-width: 640px;
-	margin: 0 auto 0;
-	padding: 24px 0;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+	align-items: center;
+	gap: 22px;
+	padding: 24px 28px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 24px;
+	background: rgba(11, 11, 16, 0.18);
+	backdrop-filter: blur(14px);
 	opacity: 0;
 	transform: translate3d(0, 0, 0);
 	animation: none !important;
 	transition:
 		opacity 260ms var(--ease-smooth),
 		transform 260ms var(--ease-smooth),
-		border-color 260ms var(--ease-smooth);
-}
-
-.process-step:hover {
-	transform: translate3d(var(--step-shift, 0px), 0, 0) !important;
-	border-color: rgba(78, 107, 255, 0.35);
+		border-color 260ms var(--ease-smooth),
+		background-color 260ms var(--ease-smooth);
 }
 
 .process-scene.is-light .process-step {
-	border-bottom-color: rgba(17, 19, 24, 0.12);
-}
-
-.process-step:last-child {
-	border-bottom: none;
+	border-color: rgba(17, 19, 24, 0.12);
+	background: rgba(255, 255, 255, 0.38);
 }
 
 .process-step .step-num {
 	color: var(--process-title-dark);
 	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
-	font-size: 14px;
-	min-width: 30px;
+	font-size: 0.82rem;
+	line-height: 1;
+	letter-spacing: 0.18em;
+	min-width: 52px;
 	padding-top: 4px;
 }
 
@@ -1266,11 +1286,16 @@ nav {
 	color: var(--process-title-light);
 }
 
+.process-step .step-body {
+	flex: 1;
+}
+
 .process-step .step-body h3 {
-	font-size: 1.0625rem;
+	margin: 0 0 8px;
+	font-size: clamp(1.06rem, 1.7vw, 1.7rem);
 	font-weight: 600;
-	margin-bottom: 8px;
-	line-height: 1.3;
+	line-height: 1.2;
+	letter-spacing: -0.04em;
 	color: var(--process-title-dark);
 }
 
@@ -1279,8 +1304,9 @@ nav {
 }
 
 .process-step .step-body p {
-	font-size: 0.96rem;
-	line-height: 1.8;
+	margin: 0;
+	font-size: 0.94rem;
+	line-height: 1.7;
 	color: var(--process-muted-dark);
 }
 
@@ -1299,7 +1325,7 @@ nav {
 	pointer-events: none;
 	transform: translateY(100%);
 	transition: transform 220ms linear;
-	z-index: 4;
+	z-index: 0;
 }
 
 .process-viewport::before {
@@ -1313,7 +1339,7 @@ nav {
 }
 
 .process-scene.is-light .process-viewport::before {
-	transform: translateY(calc((1 - var(--process-entry)) * 100%));
+	transform: translateY(calc((1 - var(--process-title-opacity, 1)) * 100%));
 }
 
 .process-scene.is-light .process-viewport::after {

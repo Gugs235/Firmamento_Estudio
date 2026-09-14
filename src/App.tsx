@@ -170,9 +170,10 @@ function Process() {
 				<div className="process-viewport">
 					<div className="process-header">
 						<div className="section-label">Como funciona</div>
-						<h2 className="process-title section-title">
+						<h2 className="process-title section-title">Como funciona</h2>
+						<p className="process-subtitle">
 							De uma ideia ainda confusa a um produto pronto para crescer.
-						</h2>
+						</p>
 					</div>
 					<div className="process-steps" aria-live="polite">
 						{steps.map(([number, title, description]) => (

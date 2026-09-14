@@ -12,28 +12,41 @@ export function useProcessScene(stageRef: RefObject<HTMLElement | null>) {
 
 		const updateScene = () => {
 			const progress = getStageProgress(stage);
-			const entryProgress = clamp(remap(progress, 0, 0.12));
-			const exitProgress = clamp(remap(progress, 0.88, 1));
+			const titleOpacity = 1 - clamp(remap(progress, 0.08, 0.26));
+			const titleRise = clamp(remap(progress, 0.08, 0.28));
+			const sceneLight = clamp(remap(progress, 0.14, 0.42));
+			const finalTone = clamp(remap(progress, 0.74, 0.94));
 			const isLight = progress > 0.08;
+			const viewportWidth = window.innerWidth;
+			const windows = getStepWindows(steps.length, 0.2, 0.82);
 
 			container?.classList.toggle("is-light", isLight);
+			stage.style.setProperty("--process-step-count", String(steps.length));
 			stage.style.setProperty("--process-progress", progress.toFixed(3));
-			stage.style.setProperty("--process-entry", entryProgress.toFixed(3));
-			stage.style.setProperty("--process-exit", exitProgress.toFixed(3));
+			stage.style.setProperty("--process-entry", sceneLight.toFixed(3));
+			stage.style.setProperty("--process-title-opacity", titleOpacity.toFixed(3));
+			stage.style.setProperty(
+				"--process-title-rise",
+				`${(1 - titleRise) * 110}px`,
+			);
+			stage.style.setProperty("--process-exit", finalTone.toFixed(3));
+			stage.style.setProperty("--process-scene-light", sceneLight.toFixed(3));
+			stage.style.setProperty("--process-final-tone", finalTone.toFixed(3));
 
-			const windows = getStepWindows(steps.length);
 			steps.forEach((step, index) => {
 				const windowState = windows[index];
+				const local = clamp(
+					(progress - windowState.start) / (windowState.end - windowState.start),
+				);
 				const reveal = clamp(remap(progress, windowState.start, windowState.peak));
 				const leave = clamp(remap(progress, windowState.peak, windowState.end));
-				const visible = clamp(Math.min(reveal, 1 - leave));
-				const direction = index % 2 === 0 ? 1 : -1;
-				const offsetX = (1 - visible) * 72 * direction;
+				const opacity = clamp(Math.min(reveal, 1 - leave));
+				const x = viewportWidth * 1.35 * (1 - local) - viewportWidth * 1.35 * local;
 
-				step.style.transform = `translate3d(${offsetX}px, 0, 0)`;
-				step.style.opacity = String(visible);
-				step.style.setProperty("--step-opacity", visible.toFixed(3));
-				step.style.setProperty("--step-shift", `${offsetX}px`);
+				step.style.transform = `translate3d(${x}px, 0, 0)`;
+				step.style.opacity = String(Math.max(opacity, 0.04));
+				step.style.setProperty("--step-x", `${x}px`);
+				step.style.setProperty("--step-opacity", opacity.toFixed(3));
 			});
 		};
 
