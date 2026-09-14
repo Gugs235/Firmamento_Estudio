@@ -40,7 +40,7 @@ html {
 body {
 	background: var(--bg);
 	color: var(--text);
-	font-family: "Inter", sans-serif;
+	font-family: "Inter Variable", "Inter", system-ui, sans-serif;
 	line-height: 1.5;
 	font-size: var(--type-body);
 	text-rendering: optimizeLegibility;
@@ -66,7 +66,7 @@ section {
 
 h1,
 h2 {
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-weight: 700;
 	line-height: 1.1;
 	letter-spacing: -0.04em;
@@ -103,7 +103,7 @@ nav {
 
 .firmamento-navbar-logo {
 	flex: 0 0 auto;
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-weight: 700;
 	font-size: 15px;
 	letter-spacing: 0.08em;
@@ -168,7 +168,7 @@ nav {
 }
 
 .logo {
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-weight: 700;
 	font-size: 15px;
 	letter-spacing: 0.08em;
@@ -381,7 +381,7 @@ nav {
 
 .mockup-main-card h3 {
 	margin: 12px 0 14px;
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-size: 1.08rem;
 	letter-spacing: -0.04em;
 }
@@ -1016,7 +1016,7 @@ nav {
 }
 
 .tunnel-node span:last-child {
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-size: clamp(0.72rem, 1.2vw, 1rem);
 	font-weight: 700;
 	letter-spacing: 0.04em;
@@ -1051,10 +1051,41 @@ nav {
 }
 
 .portfolio-shell {
+	position: relative;
 	max-width: 820px;
 	margin: 0 auto;
 	padding-top: clamp(96px, 14vh, 150px);
 	transform-style: preserve-3d;
+}
+
+.portfolio-lightfall {
+	position: absolute;
+	z-index: 0;
+	top: -18vh;
+	left: 50%;
+	width: 100vw;
+	height: calc(100% + 18vh);
+	min-height: calc(100% + 18vh);
+	pointer-events: none;
+	opacity: 0.88;
+	transform: translateX(-50%);
+	mask-image: linear-gradient(
+		to bottom,
+		transparent 0%,
+		black 14%,
+		black 92%,
+		transparent 100%
+	);
+}
+
+.portfolio-lightfall .lightfall-container {
+	position: absolute;
+	inset: 0;
+}
+
+.portfolio-shell > :not(.portfolio-lightfall) {
+	position: relative;
+	z-index: 1;
 }
 
 .portfolio-shell .case-card {
@@ -1179,7 +1210,7 @@ nav {
 }
 
 .case-name {
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-size: var(--type-title);
 	font-weight: 600;
 	letter-spacing: -0.02em;
@@ -1259,7 +1290,7 @@ nav {
 }
 
 .step-num {
-	font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", "Inter Variable", system-ui, sans-serif;
 	font-size: 14px;
 	color: var(--accent);
 	min-width: 28px;
@@ -1270,7 +1301,7 @@ nav {
 	font-size: 1.0625rem;
 	font-weight: 600;
 	margin-bottom: 8px;
-	font-family: "Inter", sans-serif;
+	font-family: "Inter Variable", "Inter", system-ui, sans-serif;
 	letter-spacing: -0.02em;
 }
 
@@ -1354,7 +1385,7 @@ footer {
 }
 
 .footer-col h4 {
-	font-family: "Inter", sans-serif;
+	font-family: "Inter Variable", "Inter", system-ui, sans-serif;
 	font-size: 13px;
 	font-weight: 500;
 	color: var(--text-muted);

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useFirmamentoScene } from "./lib/use-firmamento-scene";
 import MorphicNavbar from "./components/kokonutui/morphic-navbar";
+import Lightfall from "./components/Lightfall";
 
 const navItems = [
 	["Portfólio", "#portfolio"],
@@ -116,6 +117,23 @@ function Hero() {
 function Portfolio() {
 	return (
 		<section id="portfolio" className="portfolio-shell">
+			<div className="portfolio-lightfall" aria-hidden="true">
+				<Lightfall
+					colors={["#4e6bff", "#8ca0ff", "#f2f2f5"]}
+					backgroundColor="#0b0b10"
+					speed={0.18}
+					streakCount={5}
+					streakWidth={0.75}
+					streakLength={1.3}
+					glow={0.55}
+					density={0.45}
+					twinkle={0.75}
+					zoom={3.2}
+					backgroundGlow={0.25}
+					opacity={0.55}
+					mouseInteraction={false}
+				/>
+			</div>
 			<div className="section-label">Portfólio</div>
 			<h2 className="section-title">
 				Uma ideia que saiu do papel e foi para o mercado.
