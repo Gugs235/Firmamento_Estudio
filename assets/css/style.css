@@ -57,6 +57,13 @@ section {
 	padding: 7vh 8vw;
 }
 
+#portfolio,
+#processo,
+#sobre,
+#contato {
+	scroll-margin-top: 96px;
+}
+
 h1,
 h2 {
 	font-family: "Orbitron", sans-serif;
@@ -87,6 +94,61 @@ nav {
 	background: rgba(11, 11, 16, 0.85);
 	backdrop-filter: blur(8px);
 	border-bottom: 1px solid var(--border);
+}
+
+.firmamento-navbar {
+	gap: 28px;
+	min-height: 76px;
+}
+
+.firmamento-navbar-logo {
+	flex: 0 0 auto;
+	font-family: "Orbitron", sans-serif;
+	font-weight: 700;
+	font-size: 15px;
+	letter-spacing: 0.08em;
+}
+
+.morphic-menu {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	padding: 3px;
+	border: 1px solid rgba(78, 107, 255, 0.22);
+	border-radius: 12px;
+	background: rgba(20, 20, 31, 0.74);
+	box-shadow:
+		inset 0 1px rgba(255, 255, 255, 0.04),
+		0 8px 24px rgba(11, 11, 16, 0.2);
+}
+
+.morphic-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 36px;
+	padding: 7px 14px;
+	border-radius: 8px;
+	color: var(--text-muted);
+	font-size: 14px;
+	line-height: 1;
+	white-space: nowrap;
+	transition:
+		transform var(--transition-base) var(--ease-smooth),
+		color var(--transition-base) var(--ease-smooth),
+		background-color var(--transition-base) var(--ease-smooth),
+		box-shadow var(--transition-base) var(--ease-smooth);
+}
+
+.morphic-link:hover {
+	color: var(--text);
+	background: rgba(78, 107, 255, 0.1);
+}
+
+.morphic-link[class*="font-semibold"] {
+	color: var(--text);
+	background: var(--accent);
+	box-shadow: 0 6px 18px rgba(78, 107, 255, 0.26);
 }
 
 .nav-links a,
@@ -606,10 +668,34 @@ nav {
 }
 
 @media (max-width: 768px) {
+	#portfolio,
+	#processo,
+	#sobre,
+	#contato {
+		scroll-margin-top: 156px;
+	}
+
 	nav {
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 12px;
+	}
+
+	.firmamento-navbar {
+		gap: 12px;
+	}
+
+	.morphic-menu {
+		width: 100%;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.morphic-link {
+		flex: 1 1 auto;
+		min-height: 40px;
+		padding-inline: 10px;
+		font-size: 13px;
 	}
 
 	.nav-links {
@@ -778,7 +864,7 @@ nav {
 
 .scroll-stage {
 	position: relative;
-	height: 320vh;
+	height: 460vh;
 	padding: 0;
 	background: var(--bg);
 }
@@ -942,7 +1028,6 @@ nav {
 	background: #fff;
 	opacity: var(--flash-opacity);
 	pointer-events: none;
-	mix-blend-mode: screen;
 }
 
 .scroll-cue {
@@ -968,6 +1053,7 @@ nav {
 .portfolio-shell {
 	max-width: 820px;
 	margin: 0 auto;
+	padding-top: clamp(96px, 14vh, 150px);
 	transform-style: preserve-3d;
 }
 
@@ -1030,35 +1116,6 @@ nav {
 		opacity: 1;
 		transform: none;
 		transition: none;
-	}
-}
-
-@media (max-width: 768px) {
-	.scroll-viewport {
-		min-height: 680px;
-	}
-
-	.travel-copy {
-		top: 18%;
-		left: 6vw;
-		width: 88vw;
-		transform: translate3d(0, calc(-50% - var(--copy-lift)), var(--copy-depth))
-			scale(var(--copy-scale));
-	}
-
-	.travel-copy p {
-		max-width: 34rem;
-	}
-
-	.orbital-system {
-		top: 72%;
-		left: 50%;
-		width: 92vw;
-	}
-
-	.scroll-cue {
-		bottom: 18px;
-		font-size: 0.6rem;
 	}
 }
 
