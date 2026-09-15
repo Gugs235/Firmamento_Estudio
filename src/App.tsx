@@ -168,6 +168,7 @@ function Process() {
 		<section id="processo" className="process-scene">
 			<div className="process-stage" ref={processRef}>
 				<div className="process-viewport">
+					<div className="process-wipe" aria-hidden="true" />
 					<div className="process-header">
 						<div className="section-label">Como funciona</div>
 						<h2 className="process-title section-title">Como funciona</h2>
@@ -177,7 +178,7 @@ function Process() {
 					</div>
 					<div className="process-steps" aria-live="polite">
 						{steps.map(([number, title, description]) => (
-							<div className="process-step step" key={number}>
+							<div className="process-step" key={number}>
 								<div className="step-num">{number}</div>
 								<div className="step-body">
 									<h3>{title}</h3>
@@ -185,6 +186,24 @@ function Process() {
 								</div>
 							</div>
 						))}
+					</div>
+					<div className="process-rail" aria-label="Etapas do processo">
+						<div className="process-rail-items">
+							{steps.map(([number, title]) => (
+								<span
+									className="process-rail-item"
+									data-rail-index={number}
+									key={number}
+								>
+									<span className="process-rail-dot" aria-hidden="true" />
+									<span>{title}</span>
+								</span>
+							))}
+						</div>
+						<div className="process-progress" aria-live="polite">
+							<span>Progresso</span>
+							<strong>0%</strong>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -1,7 +1,8 @@
 "use client";
 
 import clsx from "clsx";
-import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 interface NavItem {
@@ -29,6 +30,20 @@ export function MorphicNavbar({
 	logo,
 }: MorphicNavbarProps) {
 	const [activePath, setActivePath] = useState(defaultPath);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const navRef = useRef<HTMLElement>(null);
+
+	useEffect(() => {
+		const handleOutsidePointer = (event: PointerEvent) => {
+			if (!navRef.current?.contains(event.target as Node)) {
+				setIsMobileMenuOpen(false);
+			}
+		};
+
+		document.addEventListener("pointerdown", handleOutsidePointer);
+		return () =>
+			document.removeEventListener("pointerdown", handleOutsidePointer);
+	}, []);
 
 	const isActiveLink = (path: string) => {
 		if (path === "/") {
@@ -38,8 +53,18 @@ export function MorphicNavbar({
 	};
 
 	return (
-		<nav className={clsx("firmamento-navbar", className)}>
+		<nav ref={navRef} className={clsx("firmamento-navbar", className)}>
 			{logo}
+			<button
+				className="morphic-mobile-toggle"
+				type="button"
+				aria-expanded={isMobileMenuOpen}
+				aria-controls="firmamento-mobile-menu"
+				aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+				onClick={() => setIsMobileMenuOpen((open) => !open)}
+			>
+				{isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+			</button>
 			<div className="morphic-menu">
 				{Object.entries(items).map(([path, { name }], index, array) => {
 					const isActive = isActiveLink(path);
@@ -61,12 +86,33 @@ export function MorphicNavbar({
 							)}
 							href={path}
 							key={path}
-							onClick={() => setActivePath(path)}
+							onClick={() => {
+								setActivePath(path);
+								setIsMobileMenuOpen(false);
+							}}
 						>
 							{name}
 						</a>
 					);
 				})}
+			</div>
+			<div
+				className={clsx("morphic-mobile-panel", isMobileMenuOpen && "is-open")}
+				id="firmamento-mobile-menu"
+			>
+				{Object.entries(items).map(([path, { name }]) => (
+					<a
+						className={clsx("morphic-mobile-link", isActiveLink(path) && "is-active")}
+						href={path}
+						key={path}
+						onClick={() => {
+							setActivePath(path);
+							setIsMobileMenuOpen(false);
+						}}
+					>
+						{name}
+					</a>
+				))}
 			</div>
 		</nav>
 	);

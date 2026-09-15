@@ -6,62 +6,78 @@ export function useProcessScene(stageRef: RefObject<HTMLElement | null>) {
 		const stage = stageRef.current;
 		if (!stage) return;
 
-		const container = stage.closest<HTMLElement>(".process-scene");
+		const scene = stage.closest<HTMLElement>(".process-scene");
 		const steps = [...stage.querySelectorAll<HTMLElement>(".process-step")];
+		const railItems = [
+			...stage.querySelectorAll<HTMLElement>(".process-rail-item"),
+		];
+		const progressLabel = stage.querySelector<HTMLElement>(
+			".process-progress strong",
+		);
 		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const windows = getStepWindows(steps.length, 0.12, 0.85);
 
 		const updateScene = () => {
 			const progress = getStageProgress(stage);
-			const titleOpacity = 1 - clamp(remap(progress, 0.08, 0.26));
-			const titleRise = clamp(remap(progress, 0.08, 0.28));
-			const sceneLight = clamp(remap(progress, 0.14, 0.42));
-			const finalTone = clamp(remap(progress, 0.74, 0.94));
-			const isLight = progress > 0.08;
-			const viewportWidth = window.innerWidth;
-			const windows = getStepWindows(steps.length, 0.2, 0.82);
-
-			container?.classList.toggle("is-light", isLight);
-			stage.style.setProperty("--process-step-count", String(steps.length));
-			stage.style.setProperty("--process-progress", progress.toFixed(3));
-			stage.style.setProperty("--process-entry", sceneLight.toFixed(3));
-			stage.style.setProperty("--process-title-opacity", titleOpacity.toFixed(3));
-			stage.style.setProperty(
-				"--process-title-rise",
-				`${(1 - titleRise) * 110}px`,
+			const introOpacity = 1 - remap(progress, 0, 0.12);
+			const darkProgress = remap(progress, 0.84, 1);
+			const wipeProgress = remap(progress, 0, 0.1);
+			const activeIndex = Math.min(
+				steps.length - 1,
+				Math.floor(remap(progress, 0.12, 0.85) * steps.length),
 			);
-			stage.style.setProperty("--process-exit", finalTone.toFixed(3));
-			stage.style.setProperty("--process-scene-light", sceneLight.toFixed(3));
-			stage.style.setProperty("--process-final-tone", finalTone.toFixed(3));
+
+			scene?.classList.toggle("is-dark", progress >= 0.925);
+			scene?.classList.toggle("is-intro-hidden", introOpacity <= 0);
+			stage.style.setProperty("--process-progress", progress.toFixed(3));
+			stage.style.setProperty("--process-intro-opacity", introOpacity.toFixed(3));
+			stage.style.setProperty("--process-dark-progress", darkProgress.toFixed(3));
+			stage.style.setProperty("--process-wipe-progress", wipeProgress.toFixed(3));
+			stage.style.setProperty(
+				"--process-wipe-opacity",
+				progress < 0.1 ? "1" : "0",
+			);
+			if (progressLabel)
+				progressLabel.textContent = `${Math.round(progress * 100)}%`;
 
 			steps.forEach((step, index) => {
 				const windowState = windows[index];
-				const local = clamp(
-					(progress - windowState.start) / (windowState.end - windowState.start),
-				);
-				const reveal = clamp(remap(progress, windowState.start, windowState.peak));
-				const leave = clamp(remap(progress, windowState.peak, windowState.end));
-				const opacity = clamp(Math.min(reveal, 1 - leave));
-				const x = viewportWidth * 1.35 * (1 - local) - viewportWidth * 1.35 * local;
+				const enter = remap(progress, windowState.start, windowState.peak);
+				const leave = remap(progress, windowState.peak, windowState.end);
+				const isLastStep = index === steps.length - 1;
+				const opacity = isLastStep
+					? clamp(enter)
+					: clamp(Math.min(enter, 1 - leave));
+				const x = isLastStep
+					? progress <= windowState.peak
+						? 140 * (1 - enter)
+						: 0
+					: progress <= windowState.peak
+						? 140 * (1 - enter)
+						: -140 * leave;
 
-				step.style.transform = `translate3d(${x}px, 0, 0)`;
-				step.style.opacity = String(Math.max(opacity, 0.04));
-				step.style.setProperty("--step-x", `${x}px`);
-				step.style.setProperty("--step-opacity", opacity.toFixed(3));
+				step.style.opacity = String(opacity);
+				step.style.transform = `translate3d(calc(-50% + ${x}vw), -50%, 0)`;
+				step.style.setProperty("--step-x", `${x}vw`);
+			});
+
+			railItems.forEach((item, index) => {
+				item.classList.toggle("is-current", index === activeIndex);
+				item.classList.toggle("is-past", index < activeIndex);
+				item.classList.toggle("is-future", index > activeIndex);
 			});
 		};
 
 		if (reduce) {
-			container?.classList.add("is-reduced");
-			steps.forEach((step) => {
-				step.style.opacity = "1";
-				step.style.transform = "none";
-			});
+			scene?.classList.add("is-reduced", "is-dark");
 			return;
 		}
 
 		updateScene();
+		let frame = 0;
 		const onScroll = () => {
-			window.requestAnimationFrame(updateScene);
+			window.cancelAnimationFrame(frame);
+			frame = window.requestAnimationFrame(updateScene);
 		};
 		const onResize = () => updateScene();
 
@@ -69,6 +85,7 @@ export function useProcessScene(stageRef: RefObject<HTMLElement | null>) {
 		window.addEventListener("resize", onResize);
 
 		return () => {
+			window.cancelAnimationFrame(frame);
 			window.removeEventListener("scroll", onScroll);
 			window.removeEventListener("resize", onResize);
 		};
