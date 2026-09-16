@@ -66,6 +66,10 @@ components:
 
 # Design System: Firmamento Estúdio
 
+## Implementação
+
+Este sistema é aplicado em uma interface React + TypeScript construída com Vite. A folha de estilos complementar fica em `assets/css/style.css`; tokens e estilos base adicionais ficam em `src/index.css`.
+
 ## Overview
 
 **Creative North Star: "O estúdio em órbita"**

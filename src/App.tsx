@@ -46,11 +46,11 @@ const steps = [
 function Actions() {
 	return (
 		<div className="actions">
-			<a href="#contato">
-				<button className="btn-primary">Falar com o estúdio</button>
+			<a href="#contato" className="btn-primary">
+				Falar com o estúdio
 			</a>
-			<a href="#portfolio">
-				<button className="btn-ghost">Ver portfólio</button>
+			<a href="#portfolio" className="btn-ghost">
+				Ver portfólio
 			</a>
 		</div>
 	);
@@ -240,6 +240,7 @@ function Contact() {
 			<div
 				className="orbit-wrap"
 				style={{ right: "50%", transform: "translate(50%, -50%)", opacity: 0.35 }}
+				aria-hidden="true"
 			>
 				<div className="ring ring-2" />
 				<div className="ring ring-1" />
@@ -254,8 +255,13 @@ function Contact() {
 				real.
 			</p>
 			<div className="actions">
-				<a href="https://wa.me/55" target="_blank" rel="noreferrer">
-					<button className="btn-primary">Agendar uma conversa</button>
+				<a
+					href="https://wa.me/55"
+					target="_blank"
+					rel="noreferrer"
+					className="btn-primary"
+				>
+					Agendar uma conversa
 				</a>
 			</div>
 		</section>

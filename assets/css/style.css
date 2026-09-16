@@ -493,6 +493,10 @@ nav {
 }
 
 .btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 	font-size: 15px;
 	font-weight: 600;
 	padding: 15px 30px;
@@ -514,6 +518,10 @@ nav {
 }
 
 .btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 	font-size: 15px;
 	font-weight: 500;
 	padding: 14px 20px;
@@ -540,6 +548,7 @@ nav {
 	perspective: 900px;
 	z-index: 1;
 	opacity: 0.85;
+	pointer-events: none;
 }
 
 .orbit-core {
@@ -1758,12 +1767,16 @@ nav {
 }
 
 .contact h2 {
+	position: relative;
+	z-index: 2;
 	font-size: clamp(2rem, 4vw, 3rem);
 	margin-bottom: 18px;
 	letter-spacing: -0.05em;
 }
 
 .contact p {
+	position: relative;
+	z-index: 2;
 	color: var(--text-muted);
 	font-size: 1rem;
 	margin-bottom: 32px;
@@ -1774,7 +1787,10 @@ nav {
 }
 
 .contact .actions {
+	position: relative;
+	z-index: 2;
 	justify-content: center;
+	align-items: center;
 }
 
 footer {

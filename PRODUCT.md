@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-static HTML/CSS/JS
+React + TypeScript + Vite, com CSS complementar em `assets/css/style.css`.
 
 ## Users
 
@@ -38,13 +38,13 @@ Confirmed capabilities include:
 - website and product concept development
 - proposal and inquiry flow
 - digital product and tool design thinking
-- implementation with static web technology and front-end execution
+- implementation with React, TypeScript, Vite and front-end execution
 - launch support and post-delivery guidance
 
 Confirmed constraints:
 
 - this is a small, individual-led studio rather than a large multi-team agency
-- the current implementation is a static front-end website without a framework or CMS
+- the current implementation is a React/Vite front-end website without a CMS
 - the business is presented in Brazilian Portuguese and is rooted in the local market context
 - the visual system is intentionally designed around a space-themed identity, but the product truth itself is the studio’s service offering and process, not a fixed visual formula
 
@@ -64,9 +64,9 @@ Known identity signals confirmed in the existing site:
 
 Evidence found in the project:
 
-- Landing page and sections in [index.html](index.html)
+- Landing page and sections in [src/App.tsx](src/App.tsx)
 - Brand colors and visual language in [assets/css/style.css](assets/css/style.css)
-- Dynamic footer year logic in [assets/js/script.js](assets/js/script.js)
+- Interactive scenes and scroll logic in [src/lib/](src/lib/)
 - Portfolio content describing a SaaS case study and studio process
 - Contact and social links embedded in the page for WhatsApp, Instagram, and GitHub
 
