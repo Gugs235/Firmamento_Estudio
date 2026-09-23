@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Analytics } from "@vercel/analytics/next"
 import App from "./App";
 import "@fontsource/orbitron/500.css";
 import "@fontsource/orbitron/700.css";

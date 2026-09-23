@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFirmamentoScene } from "./lib/use-firmamento-scene";
 import { useProcessScene } from "./lib/use-process-scene";
 import MorphicNavbar from "./components/kokonutui/morphic-navbar";
+import { Analytics } from "@vercel/analytics/next"
 
 const navItems = [
 	["Portfólio", "#portfolio"],
